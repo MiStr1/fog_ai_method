@@ -80,7 +80,11 @@ class MyModel:
         client.on_connect = on_connect
         client.on_publish = on_publish
         # client.on_message = on_message
-        result = client.connect("194.249.2.112", 30533)
+        #logging.info(self.app.appconfig.get_destination()["detected_cor"].hostname)
+        #logging.info(self.app.appconfig.get_destination()["detected_cor"].port)
+        logging.info(type(self.app.appconfig.get_destination()["detected_cor"].hostname))
+        logging.info(type(self.app.appconfig.get_destination()["detected_cor"].port))
+        result = client.connect("194.249.2.112", self.app.appconfig.get_destination()["detected_cor"].port)
         client.loop_start()
 
         # if you need to check the mqtt data send to prometheus you need to uncomment this an on_message line
@@ -109,7 +113,6 @@ class MyModel:
                     ret, frame = self.cap.read()
 
                     start_time = time.time()  # start time of the loop
-                    print()
 
                     if ret:
                         height_ori, width_ori = frame.shape[:2]
@@ -138,9 +141,6 @@ class MyModel:
 
                         detections = []
 
-                        # rescale the coordinates to the original image
-                        #logging.info(bboxes)
-
                         for box in bboxes:
                             logging.info(box)
                             detections.append({'class': 'license_plate',
@@ -149,21 +149,19 @@ class MyModel:
                                                'score': str(box[4])})
                             coor = np.array(box[:4], dtype=np.int32)
                             gray = cv2.cvtColor(original_frame, cv2.COLOR_BGR2GRAY)
-                            gray = cv2.bilateralFilter(gray, 13, 15, 15)
-                            logging.info("size")
-                            logging.info(gray.shape)
-                            logging.info(coor)
-                            license_plate = gray[coor[0]:coor[2], coor[1]:coor[3]]
-                            detections[-1]['text'] = pytesseract.image_to_string(license_plate, config='--psm 11')
-
+                            height = int((coor[3] - coor[1]) / 7)
+                            gray = gray[coor[1] + height:coor[3] - height, coor[0]:coor[2]]
+                            gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+                            detections[-1]['text'] = pytesseract.image_to_string(gray)
 
                         frame = draw_bbox(original_frame, bboxes, CLASSES=self.CLASSES, rectangle_colors='')
+
 
                         retval, buffer = cv2.imencode('.jpg', frame)
                         jpg_as_text = b64encode(buffer)
 
-                        infot = client.publish("miha/test_yolo_frame", jpg_as_text, qos=0)
-                        infot.wait_for_publish()
+                        #infot = client.publish("miha/test_yolo_frame", jpg_as_text, qos=0)
+                        #infot.wait_for_publish()
 
 
                         message = {'ai_id': self.id,

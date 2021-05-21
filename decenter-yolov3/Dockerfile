@@ -14,7 +14,9 @@ RUN apt-get update \
     && apt-get install -y \
         python3-opencv \
     && apt-get install -y \
-        tesseract-ocr
+        tesseract-ocr \
+    && apt-get install -y \
+        libtesseract-dev
 
 COPY requirements.txt requirements.txt
 
@@ -31,10 +33,10 @@ ADD ./MyModel.py /
 
 ENV MY_APP_CONFIG="{\
 	\"input\": \
-	{ \"url\": \"http://servlet:8081/cars_demo.webm\" },\
+	{ \"url\": \"http://servlet:8081/cars_demo2.webm\" },\
 	\"output\": \
 		{ \"url\": {\
-			\"detected_cor\":\"mqtt://194.249.2.112:30854/ljubljana_yolo_demo\"}\
+			\"detected_cor\":\"mqtt://194.249.2.112:30533/ljubljana_yolo_demo\"}\
  		},\
 	\"ai_model\":\
 		{ \"url\": \"http://182.252.132.39:5000\",\
