@@ -82,8 +82,6 @@ class MyModel:
         # client.on_message = on_message
         #logging.info(self.app.appconfig.get_destination()["detected_cor"].hostname)
         #logging.info(self.app.appconfig.get_destination()["detected_cor"].port)
-        logging.info(type(self.app.appconfig.get_destination()["detected_cor"].hostname))
-        logging.info(type(self.app.appconfig.get_destination()["detected_cor"].port))
         result = client.connect("194.249.2.112", self.app.appconfig.get_destination()["detected_cor"].port)
         client.loop_start()
 
@@ -158,7 +156,7 @@ class MyModel:
 
 
                         retval, buffer = cv2.imencode('.jpg', frame)
-                        jpg_as_text = b64encode(buffer)
+                        jpg_as_text = b64encode(buffer).decode('ascii')
 
                         #infot = client.publish("miha/test_yolo_frame", jpg_as_text, qos=0)
                         #infot.wait_for_publish()
@@ -170,7 +168,7 @@ class MyModel:
                                    'timestamp': str(self.current_frame_time),
                                    'detections': detections,
                                    'encoded_image': jpg_as_text}
-                        logging.info(message)
+                        #logging.info(message)
                         message = json.dumps(message)
 
                         """
@@ -180,8 +178,8 @@ class MyModel:
                         
                         frame_out = cv2.imencode('.jpg', frame_ori)[1].tostring()
                         """
-
-                        infot = client.publish("miha/test_yolo", message, qos=0)
+                        logging.info(self.app.appconfig.get_destination()["detected_cor"].path)
+                        infot = client.publish(str(self.app.appconfig.get_destination()["detected_cor"].path), message, qos=0)
                         infot.wait_for_publish()
 
                         # send data to prometheus every 2 seconds

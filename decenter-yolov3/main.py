@@ -87,10 +87,10 @@ def main():
         rez = train()
         TRAINING = False
         if rez:
-             return "SUCCESFULLY TRAINED MODEL"
+            my_model.load_ai_model("a")
+            return "SUCCESFULLY TRAINED MODEL"
         else:
             return "ERROR OCCURED WHILE TRAINING THE MODEL"
-
 
     flaskapp.run(host="0.0.0.0", threaded=True)
 
