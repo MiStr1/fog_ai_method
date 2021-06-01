@@ -3,6 +3,8 @@ from decenter.ai.appconfig import AppConfig
 from decenter.ai.requesthandler import AIReqHandler
 from decenter.ai.flask import init_handler
 import decenter.ai.utils.model_utils as model_utils
+import paho.mqtt.client as paho
+
 
 import logging
 import sys
@@ -17,6 +19,7 @@ TRAINING = False
 
 
 def main():
+
     # set logger config
     logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
@@ -31,6 +34,12 @@ def main():
 
 
     app.start(my_model)
+
+    if my_model.app.appconfig.get_input_source().scheme == "https" and my_model.app.appconfig.get_autostart() == "True":
+        logging.info("starting compute_ai, HTTPS and autostart")
+
+        result = my_model.compute_ai(my_model.app.appconfig.get_input_source().geturl())
+        my_model.app.fire_notification(result)
 
 
     # start Flask message handler here

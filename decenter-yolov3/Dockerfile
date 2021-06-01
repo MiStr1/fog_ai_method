@@ -1,4 +1,4 @@
-FROM dec-base-demo
+FROM dec-base-demo-gpu
 
 # install tensorflow
 #ARG TF_PACKAGE=tensorflow
@@ -32,6 +32,26 @@ ADD utils /utils/
 ADD ./MyModel.py /
 
 WORKDIR /
+
+ENV MY_APP_CONFIG="{\
+  \"input\":{\
+    \"url\":\"http://servlet:8081/cars_demo2.webm\"\
+  },\
+  \"output\":{\
+    \"url\":{\
+      \"mqtt\":\"mqtt://194.249.2.112:30533/jobs/67965ae8-d5e3-4e82-a123-151aae8bbc5e\"\
+    }\
+  },\
+  \"ai_model\":{\
+    \"url\":\"\",\
+    \"model_name\":\"decenter_yolov3\",\
+    \"model_version\":\"0.1\"\
+  },\
+  \"autostart\":{\
+    \"value\":\"True\"\
+  }\
+}"
+
 
 # Expose ports
 # for flask

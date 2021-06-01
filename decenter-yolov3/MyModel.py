@@ -80,9 +80,9 @@ class MyModel:
         client.on_connect = on_connect
         client.on_publish = on_publish
         # client.on_message = on_message
-        #logging.info(self.app.appconfig.get_destination()["detected_cor"].hostname)
-        #logging.info(self.app.appconfig.get_destination()["detected_cor"].port)
-        result = client.connect("194.249.2.112", self.app.appconfig.get_destination()["detected_cor"].port)
+        logging.info(self.app.appconfig.get_destination()["mqtt"].hostname)
+        logging.info(self.app.appconfig.get_destination()["mqtt"].port)
+        result = client.connect(self.app.appconfig.get_destination()["mqtt"].hostname, self.app.appconfig.get_destination()["mqtt"].port)
         client.loop_start()
 
         # if you need to check the mqtt data send to prometheus you need to uncomment this an on_message line
@@ -96,6 +96,11 @@ class MyModel:
         self.current_frame_time = time.time()
         prometheus_time = time.time()
         self.init_video = False
+
+        topic = self.app.appconfig.get_destination()["mqtt"].path
+        if topic[0] == "/":
+            topic = topic[1:]
+        logging.info(topic)
 
 
         while self.continue_running:
@@ -178,8 +183,7 @@ class MyModel:
                         
                         frame_out = cv2.imencode('.jpg', frame_ori)[1].tostring()
                         """
-                        logging.info(self.app.appconfig.get_destination()["detected_cor"].path)
-                        infot = client.publish(str(self.app.appconfig.get_destination()["detected_cor"].path), message, qos=0)
+                        infot = client.publish(topic, message, qos=0)
                         infot.wait_for_publish()
 
                         # send data to prometheus every 2 seconds
