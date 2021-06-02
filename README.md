@@ -13,7 +13,7 @@ go to the decenter_base folder and run `docker build . -t dec-base-demo`
 
 Then go to the decenter-yolov3 folder and set up the MY_APP_CONFIG variable in the dockerfile. The input contains 
 the URL of the input webm stream. The output contains the MQTT server URL and the topic where the data will be sent 
-to. (You can also add  MY_APP_CONFIG when you run the container with `docker run -e MY_APP_CONFIG={json} ...`). 
+to. (You can also add  MY_APP_CONFIG later on when you run the container with `docker run -e MY_APP_CONFIG={json} ...`). 
 Then run `docker build . -t yolo_license_plate`.
 You can also find prebuild images on dockerhub: [mihastravs/yolo_license_plate_gpu](https://hub.docker.com/repository/docker/mihastravs/yolo_license_plate_gpu), [mihastravs/yolo_license_plate](https://hub.docker.com/repository/docker/mihastravs/yolo_license_plate)
 
