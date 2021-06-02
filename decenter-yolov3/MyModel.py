@@ -157,15 +157,12 @@ class MyModel:
                             gray = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
                             detections[-1]['text'] = pytesseract.image_to_string(gray)
 
+
                         frame = draw_bbox(original_frame, bboxes, CLASSES=self.CLASSES, rectangle_colors='')
 
 
                         retval, buffer = cv2.imencode('.jpg', frame)
                         jpg_as_text = b64encode(buffer).decode('ascii')
-
-                        #infot = client.publish("miha/test_yolo_frame", jpg_as_text, qos=0)
-                        #infot.wait_for_publish()
-
 
                         message = {'ai_id': self.id,
                                    'fps': self.fps,

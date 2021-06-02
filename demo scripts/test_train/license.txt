@@ -1,0 +1,10 @@
+data/images/Cars0.png 226,125,419,173,0
+data/images/Cars266.png 11,57,88,76,0 15,84,84,102,0 23,110,75,122,0 24,150,74,175,0 95,105,158,122,0 154,45,393,176,0
+data/images/Cars1.png 134,128,262,160,0
+data/images/Cars2.png 229,176,270,193,0
+data/images/Cars3.png 142,128,261,157,0
+data/images/Cars4.png 156,82,503,253,0
+data/images/Cars5.png 226,218,242,240,0
+data/images/Cars6.png 112,114,373,239,0
+data/images/Cars7.png 166,141,206,154,0
+data/images/Cars8.png 204,104,304,134,0

@@ -1,4 +1,4 @@
-FROM dec-base-demo-gpu
+FROM dec-base-demo
 
 # install tensorflow
 #ARG TF_PACKAGE=tensorflow
@@ -35,7 +35,7 @@ WORKDIR /
 
 ENV MY_APP_CONFIG="{\
   \"input\":{\
-    \"url\":\"http://servlet:8081/cars_demo2.webm\"\
+    \"url\":\"http://194.249.2.111:30090/cars_demo3.webm\"\
   },\
   \"output\":{\
     \"url\":{\

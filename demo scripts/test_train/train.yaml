@@ -1,0 +1,5 @@
+annotations:
+  train:
+    license.txt
+  test:
+    license_test.txt
